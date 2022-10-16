@@ -36,7 +36,7 @@ export async function runFlow(name) {
                     const [script_type, script_name] = task.script.split(':');
                     if (script_type === 'shell') {
                         const script = Scripts.shell[script_name];
-                        await spawn(`cat ${script} | docker run -i${Object.keys(task.env).map(key => ` -e ${key}`).join('')} --env-file ./.env ${DOCKER_ENV_PREFIX}${dockerfile} /bin/sh`, task.env);
+                        await spawn(`cat ${script} | docker run -i${Object.keys(task.env ?? {}).map(key => ` -e ${key}`).join('')} --env-file ./.env ${DOCKER_ENV_PREFIX}${dockerfile} /bin/sh`, task.env);
                     } else {
                         throw "Unsupported script!";
                     }
