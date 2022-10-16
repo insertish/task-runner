@@ -23,10 +23,12 @@ for (const file of files) {
 }
 
 // Ensure all environments are ready
-for (const dockerfile of Environments.docker) {
-    console.info(`Building Docker environment ${dockerfile}`);
-    const path = resolve('config', 'environments', dockerfile);
-    await spawn(`docker build -t ${DOCKER_ENV_PREFIX}${dockerfile} - < ${path}.Dockerfile`);
-}
+export default async function() {
+    for (const dockerfile of Environments.docker) {
+        console.info(`Building Docker environment ${dockerfile}`);
+        const path = resolve('config', 'environments', dockerfile);
+        await spawn(`docker build -t ${DOCKER_ENV_PREFIX}${dockerfile} - < ${path}.Dockerfile`);
+    }
 
-console.info('Environments ready!');
+    console.info('Environments ready!');
+}

@@ -1,0 +1,6 @@
+{
+  "flow": "example",
+  "repeat": 60,
+  "boot": true,
+  "disabled": true
+}

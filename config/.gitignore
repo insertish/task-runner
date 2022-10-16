@@ -13,3 +13,5 @@ scripts/*.sh
 # triggers
 triggers/webhooks/*.json
 !triggers/webhooks/example.json
+triggers/intervals/*.json
+!triggers/intervals/example.json

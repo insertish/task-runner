@@ -11,36 +11,41 @@ app.get('/', (_, res) => {
   res.send('Hello from Task Runner!')
 })
 
-app.listen(port, () => {
-  console.log(`Listening on :${port}`)
-})
+export default function() {
+  return new Promise(resolve => {
+    for (const name of Object.keys(Triggers.webhook)) {
+        const webhook = Triggers.webhook[name];
+        app[webhook.method](`/api/v1/trigger/webhook/${name}`, async (req, res) => {
+          if (webhook.if) {
+            for (const condition of webhook.if) {
+              if (condition.type === 'body') {
+                let ref = req.body;
+                const path = condition.key.split('.');
+                while (ref && path.length > 0) {
+                  ref = ref[path.shift()];
+                }
 
-for (const name of Object.keys(Triggers.webhook)) {
-    const webhook = Triggers.webhook[name];
-    app[webhook.method](`/api/v1/trigger/webhook/${name}`, async (req, res) => {
-      if (webhook.if) {
-        for (const condition of webhook.if) {
-          if (condition.type === 'body') {
-            let ref = req.body;
-            const path = condition.key.split('.');
-            while (ref && path.length > 0) {
-              ref = ref[path.shift()];
-            }
+                if (path.length > 0) {
+                  throw "Did not consume all tokens!";
+                }
 
-            if (path.length > 0) {
-              throw "Did not consume all tokens!";
-            }
-
-            if (ref !== condition.value) {
-              res.sendStatus(204);
-              console.info("Ignoring request as condition did not match!");
-              return;
+                if (ref !== condition.value) {
+                  res.sendStatus(204);
+                  console.info("Ignoring request as condition did not match!");
+                  return;
+                }
+              }
             }
           }
-        }
-      }
 
-      runFlow(webhook.flow);
-      res.sendStatus(204);
+          runFlow(webhook.flow);
+          res.sendStatus(204);
+        });
+    }
+
+    app.listen(port, () => {
+      console.log(`Listening on :${port}`);
+      resolve();
     });
+  });
 }
