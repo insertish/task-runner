@@ -1,0 +1,13 @@
+{
+  "environments": ["docker:example"],
+  "tasks": [
+    {
+      "type": "script",
+      "target": "docker:example",
+      "script": "shell:example",
+      "env": {
+        "TEXT": "Hello!"
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+# environments
+environments/*.Dockerfile
+!environments/example.Dockerfile
+
+# flows
+flows/*.json
+!flows/example.json
+
+# scripts
+scripts/*.sh
+!scripts/example.sh
+
+# triggers
+triggers/webhooks/*.json
+!triggers/webhooks/example.json
