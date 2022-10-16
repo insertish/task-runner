@@ -40,8 +40,7 @@ for (const name of Object.keys(Triggers.webhook)) {
         }
       }
 
-
-      await runFlow(webhook.flow);
+      runFlow(webhook.flow);
       res.sendStatus(204);
     });
 }
