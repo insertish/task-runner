@@ -1,7 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
-/** @type {Record<'webhook', Record<string, { flow: string, method: 'get' | 'post' }>>} */
+/** @type {Record<'webhook', Record<string, { flow: string, method: 'get' | 'post', if?: { type: "body", key: string, value: string }[] }>>} */
 export const Triggers = {
     webhook: {}
 };
